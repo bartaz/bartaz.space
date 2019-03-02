@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>bartaz.space</title>
+<style>
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes space {
+  0%   {
+    transform: translate3d(0, 0, -3333px) scale(0.2) rotate(-222deg);
+    opacity: 0;
+  }
+  20%   {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 0, 1000px) scale(1) rotate(222deg);
+    opacity: 0;
+  }
+}
+
+.blink {
+  animation: blink .5s linear infinite;
+}
+
+.blink2 {
+  animation: blink .25s 2s linear infinite;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: Comic Sans MS, Comic Sans, cursive;
+  /* THX NASA: https://www.jpl.nasa.gov/spaceimages/images/wallpaper/PIA09579-1600x1200.jpg */
+  background: #000 url('./img/space.jpg');
+  background-size: cover;
+  overflow: hidden;
+
+  perspective: 1111px;
+  perspective-origin: center center;
+  transform-style: preserve-3d;
+}
+
+.bartaz {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -222px;
+  margin-top: -333px;
+  transform: translate3d(0, 0, -2000px);
+  transform-style: preserve-3d;
+  animation: space 6666ms infinite;
+}
+
+h1 {
+  transform: translate3d(160px, 40px,200px) rotate(-15deg);
+  font-size: 8rem;
+  color: #0ffff0;
+  position: absolute;
+}
+
+.space {
+  color: #f0000f;
+}
+
+a, a:link, a:visited, a:focus {
+  font-size: 4rem;
+  color: pink;
+}
+
+.portal {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  display: block;
+  transition: transform 300ms;
+}
+
+.portal:hover,
+.portal:focus {
+  transform: rotate(7deg) scale(1.1);
+}
+</style>
+</head>
+
+<body>
+  <h1>
+    <span class="blink">bartaz</span><small class="space blink2">.space</small>
+  </h1>
+  <a class="portal" href="https://webteam.space">P0RtAL!!!!1!</a>
+  <img src="./img/bartaz1.png" class="bartaz" style="top: 44%; left: 55%;">
+  <script>
+    function requestTimeout(callback, delay) {
+      var start = Date.now();
+      function f() {
+        if (Date.now() - start > delay) {
+          start = Date.now();
+          callback();
+        } else {
+          requestAnimationFrame(f);
+        }
+      }
+      requestAnimationFrame(f);
+    }
+
+    function launchBartaz() {
+      var b = document.createElement("img");
+      b.src = "./img/bartaz" + (1 + Math.floor(Math.random() * 5))+ ".png"
+      b.className = "bartaz";
+      b.style.top = Math.floor(Math.random() * 200) - 50 + "%";
+      b.style.left = Math.floor(Math.random() * 200) - 50 + "%";
+      document.body.prepend(b);
+
+      requestTimeout(function(){
+        document.body.removeChild(b);
+      }, 6666)
+      requestTimeout(launchBartaz, 333 + Math.floor(Math.random() * 666))
+    }
+
+   launchBartaz();
+
+   document.addEventListener("mousemove", function(event) {
+     var wW = window.innerWidth;
+     var wH = window.innerHeight;
+     document.body.style.perspectiveOrigin = event.clientX + "px " + event.clientY + "px";
+     document.body.style.backgroundPosition = (wW/2 - wW + event.clientX)/wW*wW/9 + "px " + (wH/2 - wH + event.clientY)/wH*wH/9 + "px";
+   })
+  </script>
+</body>
+</html>
